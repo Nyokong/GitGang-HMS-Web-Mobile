@@ -13,4 +13,5 @@ urlpatterns = [
     path('user/create/', views.UserCreateView.as_view(), name="create-user"),
     path('users/view/', views.UserListViewSet.as_view()),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
+    # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
 ]

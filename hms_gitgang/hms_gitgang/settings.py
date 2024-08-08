@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,6 +20,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # custom Auth user model
 AUTH_USER_MODEL = 'api.CustomUser'
 
+# django default development phase
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'callmekaywork@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Khotso@4891'
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+
+# dont know what this does yet
+SITE_ID = 1  
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -45,6 +59,11 @@ INSTALLED_APPS = [
     # --- installed
     'rest_framework',
     'api',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +74,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'hms_gitgang.urls'

@@ -43,30 +43,5 @@ class UserSerializer(serializers.ModelSerializer):
         user.is_active=False
         user.save()
 
-        # sending email verification link
-        self.send_verification_email(user)
-        
         # after all return user
         return user
-
-    def send_verification_email(self, user):
-         # Accessing request from context
-        request = self.context.get('request')
-        # if not request:
-        #     raise ValueError("Request context is not available in the serializer")
-
-        token=default_token_generator.make_token(user)
-        
-        uid=urlsafe_base64_encode(force_bytes(user.pk))
-        verification_url=request.request.build_absolute_uri(
-            reverse('verify-email', kwargs={'uidb64':uid, 'token':token})
-        )
-
-        message=f'Please click the link below to verify your email:\n{verification_url}'
-        send_mail(
-            'Verify Your Email',
-            message,
-            'callmekaywork@gmail.com',
-            [user.email],
-            fail_silently=False,
-        )

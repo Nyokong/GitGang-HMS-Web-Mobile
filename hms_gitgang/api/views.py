@@ -16,23 +16,52 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 
+import random
+
+from django.conf import settings
+
+# from allauth.account.utils import send_password_reset_email
+
+
 # create user viewset api endpoint
 class UserCreateView(generics.CreateAPIView):
-    # create a serializer
     serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data, context={'request': request})
+
         serializer.is_valid(raise_exception=True)
+
         user = serializer.save()
 
-        # sending email for verification
-        self.send_verification_email(user)
+        # Call the send_verification_email method with the newly created user
+        # if user:
+        #     self.send_verification_email(user)
 
         return Response({
             "user": serializer.data,
-            "message": "User created successfully. Please check your email to verify account."
+            "message": "User created successfully. Please check your email to verify account."            
         }, status=status.HTTP_201_CREATED)
+
+    def send_verification_email(self, user, *args, **kwargs):
+
+        # Generate a 5-digit verification code
+        verification_code = random.randint(10000, 99999)
+
+        # get user email
+        email = user.email
+
+        # sender email
+        sender = settings.EMAIL_HOST_USER
+
+        # defining subject and message
+        subject = "Account Verification"
+        message = f'Your verfication code is {verification_code}'
+
+        # send the email
+        send_mail(subject, message, sender, [f'{email}'], fail_silently=False)
+
+        return Response({'Success': "Verification email sent"}, status=status.HTTP_200_OK)
 
 
 # class verify Email view 
