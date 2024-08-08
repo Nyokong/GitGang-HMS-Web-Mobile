@@ -15,6 +15,14 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD = 'username'
 
+    def save(self, *args, **kwargs):
+        # overwrite the default email to the school email
+        # this will set the default email into the default school email
+        if not self.email:
+            self.email = f"{self.username}@mynwu.ac.za" 
+
+        super().save(*args, **kwargs)
+
     class Meta:
         def __str__(self):
             return self.username
