@@ -11,6 +11,7 @@ from . import views
 urlpatterns = [
     # path('', include(router.urls)),
     path('user/create/', views.UserCreateView.as_view(), name="create-user"),
-    path('users/view/', views.UserListViewSet.as_view()),
+    path('users/', views.UserListViewSet.as_view(), name='users'),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
+    # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
 ]
