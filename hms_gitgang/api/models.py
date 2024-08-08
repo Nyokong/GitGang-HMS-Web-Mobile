@@ -1,9 +1,18 @@
+import re
+from django.core.exceptions import ValidationError
+
 from django.db import models
 
 # importing abstract user
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 # Create your models here.
+
+# validate email
+def validate_email(email):
+    email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    if not re.fullmatch(email_regex, email):
+        raise ValidationError('Enter a valid email address.')
 
 # my user model
 class CustomUser(AbstractUser):
@@ -14,7 +23,9 @@ class CustomUser(AbstractUser):
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_perms')
 
     USERNAME_FIELD = 'username'
-
+    
+    # overwrite the model save function
+    # this will do something before saving
     def save(self, *args, **kwargs):
         # overwrite the default email to the school email
         # this will set the default email into the default school email
