@@ -10,6 +10,7 @@ from . import views
 
 urlpatterns = [
     # path('', include(router.urls)),
-    path('users/create/', views.UserCreateViewSet.as_view()),
+    path('user/create/', views.UserCreateView.as_view(), name="create-user"),
     path('users/view/', views.UserListViewSet.as_view()),
+    path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
 ]
