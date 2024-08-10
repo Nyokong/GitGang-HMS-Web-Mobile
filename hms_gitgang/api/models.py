@@ -41,3 +41,14 @@ class CustomUser(AbstractUser):
 class CustomGroup(models.Model):
     # Your custom group fields
     pass
+
+# video uploading model
+class Video(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    # i want to only store compressed files
+    # video_file = models.FileField(upload_to='videos/')
+    compressed_file = models.FileField(upload_to='compressed_videos')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

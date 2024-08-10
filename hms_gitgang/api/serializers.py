@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser
+from .models import CustomUser, Video
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -45,3 +45,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         # after all return user
         return user
+    
+
+
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = '__all__'
