@@ -94,6 +94,11 @@ class UserListViewSet(APIView):
         serializer = UserSerializer(query, many=True)
 
         return Response(serializer.data)
+    
+class VideoView(APIView):
+    # a class the views all the videos
+    # in the database
+    pass
 
 
 
