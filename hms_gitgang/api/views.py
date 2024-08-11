@@ -97,7 +97,7 @@ class UserListViewSet(APIView):
     
 class VideoView(APIView):
     # a class the views all the videos
-    # in the database
+    # in the database all of them
     pass
 
 
