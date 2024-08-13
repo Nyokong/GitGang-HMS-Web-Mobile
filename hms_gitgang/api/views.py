@@ -77,8 +77,8 @@ class LoginAPIView(generics.GenericAPIView):
 
         user = serializer.validated_data
         # gets or creates a token of the user
-        # token, created = Token.objects.get_or_create(user=user)
-        return Response(status=status.HTTP_200_OK)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({token: 'token'}, status=status.HTTP_200_OK)
     
 class TestAPIView(generics.GenericAPIView):
     serializer_class = TestFormSerializer
