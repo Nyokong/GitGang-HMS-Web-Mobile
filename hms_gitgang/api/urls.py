@@ -11,8 +11,12 @@ from . import views
 urlpatterns = [
     # path('', include(router.urls)),
     path('user/create/', views.UserCreateView.as_view(), name="create-user"),
+    path('user/login/', views.LoginAPIView.as_view(), name="login-user"),
     path('users/', views.UserListViewSet.as_view(), name='users'),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
     path('view/videos', views.VideoView.as_view()), 
     # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
+
+    # test form path
+    path('test/', views.TestAPIView.as_view(), name="test-post"),
 ]

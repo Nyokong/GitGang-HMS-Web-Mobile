@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, Video
+from .models import CustomUser, Video, TestForm
 
 class CustomUserAdmin(UserAdmin): 
 
@@ -13,6 +13,17 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('username', 'first_name', 'last_name' ,'email', 'password', 'is_staff', 'is_active')}),
     )
 
+class CustomTestAdmin():
+    fieldsets = (
+        (None, {
+            "fields": (
+                'username', 'password',
+            ),
+        }),
+    )
+    
+
 # Register your models here.
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Video)
+admin.site.register(TestForm)

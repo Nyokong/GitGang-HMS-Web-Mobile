@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser, Video
+from .models import CustomUser, Video, TestForm
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -27,6 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, attrs):
+        # password = validate_password.pop('password')
+        # password2 = validate_password.pop('password2')
+
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Password field didnt match."})
         
@@ -46,9 +49,24 @@ class UserSerializer(serializers.ModelSerializer):
         # after all return user
         return user
     
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=8)
+    password = serializers.CharField(max_length=80)
+
+    class Meta:
+        model = TestForm
+        fields = ('username', 'password')
 
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = '__all__'
+
+class TestFormSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=8)
+    password = serializers.CharField(max_length=80)
+
+    class Meta:
+        model = TestForm
+        fields = ('username', 'password')

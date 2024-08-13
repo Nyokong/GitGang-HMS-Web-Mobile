@@ -7,8 +7,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 
-from .serializers import UserSerializer
-from .models import CustomUser
+from .serializers import UserSerializer, TestFormSerializer, LoginSerializer
+from .models import CustomUser, TestForm
 
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -21,7 +21,6 @@ import random
 from django.conf import settings
 
 # from allauth.account.utils import send_password_reset_email
-
 
 # create user viewset api endpoint
 class UserCreateView(generics.CreateAPIView):
@@ -63,6 +62,39 @@ class UserCreateView(generics.CreateAPIView):
 
         return Response({'Success': "Verification email sent"}, status=status.HTTP_200_OK)
 
+class LoginAPIView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    # post 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Print data to console
+            # print(request.data)
+            # Send back a response
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        user = serializer.validated_data
+        # gets or creates a token of the user
+        # token, created = Token.objects.get_or_create(user=user)
+        return Response(status=status.HTTP_200_OK)
+    
+class TestAPIView(generics.GenericAPIView):
+    serializer_class = TestFormSerializer
+
+    # post 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Print data to console
+            print(request.data)
+            # Send back a response
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # class verify Email view 
 class VerifyEmailView(generics.GenericAPIView):
@@ -95,7 +127,7 @@ class UserListViewSet(APIView):
 
         return Response(serializer.data)
     
-class VideoView(APIView):
+class VideoView(generics.GenericAPIView):
     # a class the views all the videos
     # in the database all of them
     pass

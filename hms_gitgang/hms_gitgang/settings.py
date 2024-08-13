@@ -45,6 +45,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+APPEND_SLASH=False 
+
+# If you want to allow all origins (not recommended for production):
+# CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Application definition
 
@@ -64,6 +73,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
+    'corsheaders',
+    
 ]
 
 MIDDLEWARE = [
@@ -76,7 +88,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'allauth.account.middleware.AccountMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
 
 ROOT_URLCONF = 'hms_gitgang.urls'
 

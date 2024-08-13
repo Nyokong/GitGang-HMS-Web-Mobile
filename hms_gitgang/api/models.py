@@ -52,3 +52,12 @@ class Video(models.Model):
     compressed_file = models.FileField(upload_to='compressed_videos')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class TestForm(models.Model):
+    username = models.CharField(verbose_name='username', unique=True, max_length=8)
+    password = models.CharField(verbose_name='password',  max_length=80)
+
+    class Meta:
+        def __str__(self):
+            return self.username
+
