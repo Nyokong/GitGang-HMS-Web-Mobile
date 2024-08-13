@@ -79,15 +79,15 @@ class LoginAPIView(generics.GenericAPIView):
         if serializer.is_valid():
             # Extract validated data
             user_data = serializer.validated_data
-            print(user_data)
+            # print(user_data)
 
             # Authenticate the user
             user = authenticate(username=user_data['username'], password=user_data['password'])
 
             print("Existing user: ",user)
 
-            target_key = '_auth_user_id'
-            target_value = '3'
+            # target_key = '_auth_user_id'
+            # target_value = '3'
             
             # this checks if the user exists
             if user is not None:
@@ -96,24 +96,24 @@ class LoginAPIView(generics.GenericAPIView):
                 loggedUser = CustomUser.objects.get(username=user)
                 # Log the user in
                 login(request, user)
-                print("user exist and now i want to login")
+
+                # print(request.session.session_key)
                 # Check if session exists
-                if request.user.is_authenticated:
-                    # Get all sessions
-                    sessions = Session.objects.filter(expire_date__gte=timezone.now())
-                    for session in sessions:
-                        data = session.get_decoded()
+                # if request.user.is_authenticated:
+                #     # Get all sessions
+                #     sessions = Session.objects.filter(expire_date__gte=timezone.now())
+                    # for session in sessions:
+                    #     data = session.get_decoded()
                         # Loop through the dictionary
-                        for key, value in data.items():
-                            if key == target_key and value == target_value:
-                                print(f"Found: {key} = {value}")
-                                break
-                        
+                        # for key, value in data.items():
+                        #     if key == target_key and value == target_value:
+                        #         print(f"Found: {key} = {value}")
+                        #         break
                         # print(data)
                     
                 
                 # Send back a response with the token
-                return Response(status=status.HTTP_200_OK)
+                return Response({'sessionid': request.session.session_key},status=status.HTTP_200_OK)
             else:
                 return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
         else:
