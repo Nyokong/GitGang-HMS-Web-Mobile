@@ -6,11 +6,12 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, TestFormSerializer, LoginSerializer
-from .models import CustomUser, TestForm
+from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer
+from .models import CustomUser, TestForm, Video
 
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -171,5 +172,20 @@ class VideoView(generics.GenericAPIView):
     # in the database all of them
     pass
 
+class UploadVideoView(generics.CreateAPIView):
+    serializer_class = VideoSerializer
+    # only authenticated users can access this page?
+    permission_classes = [IsAuthenticated]
 
+    # post 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Print data to console
+            print(request.data)
+            # Send back a response
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

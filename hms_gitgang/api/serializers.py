@@ -61,7 +61,7 @@ class LoginSerializer(serializers.Serializer):
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = '__all__'
+        fields = ('title', 'description', 'compressed_file')
 
 class TestFormSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=8)

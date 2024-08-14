@@ -14,7 +14,10 @@ urlpatterns = [
     path('user/login/', views.LoginAPIView.as_view(), name="login-user"),
     path('users/', views.UserListViewSet.as_view(), name='users'),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
+
+    # video views
     path('view/videos', views.VideoView.as_view()), 
+    path('video/upload',views.UploadVideoView.as_view(), name='video-upload'),
     # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
 
     # test form path
