@@ -2,4 +2,4 @@
 hms-env
 hms-env/Lib
 hms-env/Scripts
-hms-env/pyenv.cfg
+hms-env/pyvenv.cfg
