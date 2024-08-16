@@ -63,6 +63,20 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = ('title', 'description', 'compressed_file')
 
+    def create(self, validated_data):
+        file_vid = Video(
+            title=validated_data['title'],
+            description=validated_data['description']
+
+        )
+
+        # save the video file 
+        # to the data - test
+        file_vid.save()
+
+        # after all return user
+        return user
+
 class TestFormSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=8)
     password = serializers.CharField(max_length=80)

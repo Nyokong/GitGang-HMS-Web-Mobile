@@ -132,6 +132,7 @@ class TestAPIView(generics.GenericAPIView):
         if serializer.is_valid():
             # Print data to console
             print(request.data)
+            
             # Send back a response
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
