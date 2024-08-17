@@ -61,8 +61,22 @@ class LoginSerializer(serializers.Serializer):
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ('title', 'description', 'compressed_file')
+        fields = ['title', 'description', 'cmp_video']
 
+    def create(self, validated_data):
+        file = Video(
+            user=self.context['request'].user,
+            title=validated_data['title'],
+            description=validated_data['description'],
+            cmp_video=validated_data['cmp_video']
+        )
+
+        file.save()
+
+        # after all return user
+        return file
+    
+    
 class TestFormSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=8)
     password = serializers.CharField(max_length=80)
