@@ -182,6 +182,7 @@ class VideoView(generics.GenericAPIView):
 
 class UploadVideoView(generics.CreateAPIView):
     serializer_class = VideoSerializer
+
     # only authenticated users can access this page?
     permission_classes = [IsAuthenticated]
 
@@ -193,7 +194,7 @@ class UploadVideoView(generics.CreateAPIView):
             # Print data to console
             print(request.data)
             video = serializer.save()
-        
+
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

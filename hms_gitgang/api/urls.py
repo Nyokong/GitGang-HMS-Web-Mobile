@@ -1,12 +1,8 @@
 from django.urls import path, include
 # from rest_framework import routers
 from . import views
-
-# router = routers.DefaultRouter()
-
-# register the users url
-# router.register(r'users', views.UserCreateViewSet, basename='users')
-# router.register(r'view-users', views.UserListViewSet, basename='view-users')
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # path('', include(router.urls)),
@@ -22,4 +18,4 @@ urlpatterns = [
 
     # test form path
     path('test/', views.TestAPIView.as_view(), name="test-post"),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
