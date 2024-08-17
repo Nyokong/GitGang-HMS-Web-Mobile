@@ -22,13 +22,19 @@ from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
 from django.utils import timezone
 
+# opencv-python
 import cv2
 import os
+
+# settings
 from django.conf import settings
+
+# video compression module and adaptive streaming
+import ffmpeg
+import m3u8
 
 import random
 
-from django.conf import settings
 
 # from allauth.account.utils import send_password_reset_email
 
@@ -187,28 +193,7 @@ class UploadVideoView(generics.CreateAPIView):
             # Print data to console
             print(request.data)
             video = serializer.save()
-            input_file_path = os.path.join(settings.MEDIA_ROOT, video.video_file.name)
-            output_file_path = os.path.join(settings.MEDIA_ROOT, 'compressed_' + video.video_file.name)
-
-            self.compress_video(input_file_path, output_file_path)
-            # Send back a response
+        
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def compress_video(input_file_path, output_file_path):
-        cap = cv2.VIdeoCapture(input_file_path)
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(output_file_path, fourcc, 20.0, (1280, 720))
-
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-            out.write(frame)
-
-        cap.release()
-        out.release()
-
-        
-
