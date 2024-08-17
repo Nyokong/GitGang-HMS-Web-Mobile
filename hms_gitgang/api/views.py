@@ -26,6 +26,9 @@ from django.utils import timezone
 import cv2
 import os
 
+# task
+from .tasks import segment_video
+
 # settings
 from django.conf import settings
 
@@ -194,6 +197,12 @@ class UploadVideoView(generics.CreateAPIView):
             # Print data to console
             print(request.data)
             video = serializer.save()
+
+            # Start background task
+            output_dir = os.path.join('/tmp', f'video_{video.id}')
+            os.makedirs(output_dir, exist_ok=True)
+
+            segment_video.delay(video.video.path, output_dir)
 
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
