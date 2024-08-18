@@ -1,5 +1,6 @@
-.hms-env
-hms-env
-hms-env/Lib
-hms-env/Scripts
-hms-env/pyvenv.cfg
+.hms-venv
+hms-venv
+hms-venv/Lib
+hms-venv/Scripts
+hms-venv/pyvenv.cfg
+
