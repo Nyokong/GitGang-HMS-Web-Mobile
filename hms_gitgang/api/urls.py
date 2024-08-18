@@ -15,7 +15,6 @@ urlpatterns = [
     path('view/videos', views.VideoView.as_view()), 
     path('video/upload',views.UploadVideoView.as_view(), name='video-upload'),
     # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
-    # passwprd
 
     # test form path
     path('test/', views.TestAPIView.as_view(), name="test-post"),
