@@ -12,8 +12,8 @@ urlpatterns = [
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
 
     # video views
-    path('view/videos', views.VideoView.as_view()), 
-    path('video/upload',views.UploadVideoView.as_view(), name='video-upload'),
+    path('view/videos/', views.VideoView.as_view()), 
+    path('video/upload/',views.UploadVideoView.as_view(), name='video-upload'),
     # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
 
     # test form path
