@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer, VideoCompSerializer
+from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer
 from .models import CustomUser, TestForm
 
 from django.utils.http import urlsafe_base64_decode
@@ -36,6 +36,9 @@ import m3u8
 import moviepy.editor as mp
 
 import random
+
+from .task import my_task
+from django_q.tasks import async_task
 
 
 # from allauth.account.utils import send_password_reset_email
@@ -184,7 +187,7 @@ class VideoView(generics.GenericAPIView):
     pass
 
 class UploadVideoView(generics.CreateAPIView):
-    serializer_class = VideoCompSerializer
+    serializer_class = VideoSerializer  
 
     # only authenticated users can access this page?
     permission_classes = [IsAuthenticated]
@@ -197,7 +200,9 @@ class UploadVideoView(generics.CreateAPIView):
             # Print data to console
             print('video upload in progress')
             video = serializer.save()
-
+            print('Original Video Uploaded!')
+            # my_task("yes my task")
+            
             # Process the video for adaptive streaming
             file_obj = request.data['cmp_video']
             input_file_path = file_obj.temporary_file_path()
@@ -223,16 +228,20 @@ class UploadVideoView(generics.CreateAPIView):
 
             try:
                 # Load the video file
-                video = mp.VideoFileClip(input_file_path)
+                video = mp.VideoFileClip(input_file_path).resize(0.5)
 
                 # Split the video into segments (e.g., 10 seconds each)
-                segment_duration = 10
+                segment_duration = 5
                 segments = []
+
+                print("now cutting into segments")
                 for i in range(0, int(video.duration), segment_duration):
+                    # create the segments
                     segment = video.subclip(i, min(i + segment_duration, video.duration))
 
                     # Ensure audio is included and specify temp audio file location
                     temp_audiofile = os.path.join(temp_dir, f'temp_audio_{i}.m4a')
+
                     # create segment path
                     segment_file = os.path.join(subfolder_path, str(f'segment_{i}.ts'))
                     
@@ -260,3 +269,50 @@ class UploadVideoView(generics.CreateAPIView):
                 return Response({"error": "HLS creation failed"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UploadVideoViewTask(generics.CreateAPIView):
+    serializer_class = VideoSerializer  
+
+    # only authenticated users can access this page?
+    permission_classes = [IsAuthenticated]
+
+    # post 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Print data to console
+            print('video upload in progress')
+            video = serializer.save()
+            print('Original Video Uploaded!')
+
+            # Process the video for adaptive streaming
+            file_obj = request.data['cmp_video']
+            input_file_path = file_obj.temporary_file_path()
+
+            # Debugging: Check if the file exists
+            if not os.path.exists(input_file_path):
+                return Response({"error": "Temporary file not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+            # Start background task
+            # Create the subfolder inside 'hls_videos'
+            subfolder_path = os.path.join(settings.MEDIA_ROOT, 'hls_videos', str(video.id))
+
+            output_dir = os.path.join(settings.MEDIA_ROOT, 'hls_videos', str(video.id))
+
+            os.makedirs(output_dir, exist_ok=True)
+
+            # Set the temp directory for moviepy
+            temp_dir = os.path.join(subfolder_path, 'temp')
+            os.makedirs(temp_dir, exist_ok=True)
+            os.environ['TEMP'] = temp_dir
+            os.environ['TMPDIR'] = temp_dir
+
+            print('make a task: here')
+            my_task(input_file_path, subfolder_path, temp_dir)
+
+            return Response({"view": "view is a success!"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

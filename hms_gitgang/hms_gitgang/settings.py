@@ -79,8 +79,21 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'corsheaders',
+
+    'django_q',
     
 ]
+
+# Configure Django-Q in settings.py
+Q_CLUSTER = {
+    'name': 'DjangoQ',
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 60,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

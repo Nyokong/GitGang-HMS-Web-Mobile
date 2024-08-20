@@ -14,6 +14,7 @@ urlpatterns = [
     # video views
     path('view/videos/', views.VideoView.as_view()), 
     path('video/upload/',views.UploadVideoView.as_view(), name='video-upload'),
+    path('video/upload2/',views.UploadVideoViewTask.as_view(), name='video-task-upload'),
     # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
 
     # test form path
