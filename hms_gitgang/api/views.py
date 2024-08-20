@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer
+from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer, VideoCompSerializer
 from .models import CustomUser, TestForm
 
 from django.utils.http import urlsafe_base64_decode
@@ -184,7 +184,7 @@ class VideoView(generics.GenericAPIView):
     pass
 
 class UploadVideoView(generics.CreateAPIView):
-    serializer_class = VideoSerializer
+    serializer_class = VideoCompSerializer
 
     # only authenticated users can access this page?
     permission_classes = [IsAuthenticated]
