@@ -11,6 +11,9 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
+# we are importing videoFileClip to compress
+from moviepy.editor import VideoFileClip as vp 
+
 class UserSerializer(serializers.ModelSerializer):
 
     # password confirmation
@@ -75,7 +78,27 @@ class VideoSerializer(serializers.ModelSerializer):
 
         # after all return user
         return file
+    
+class VideoCompSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ['title', 'description', 'cmp_video']
 
+    def create(self, validated_data):
+        vid_file = validated_data.get('cmp_video')
+        vid_path = vid_file.temporary_file_path()
+
+        file = Video(
+            user=self.context['request'].user,
+            title=validated_data['title'],
+            description=validated_data['description'],
+            cmp_video=validated_data['cmp_video']
+        )
+
+        file.save()
+
+        # after all return user
+        return file
 
 class TestFormSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=8)
