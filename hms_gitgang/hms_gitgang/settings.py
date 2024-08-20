@@ -51,13 +51,9 @@ CORS_ALLOWED_ORIGINS = [
 
 APPEND_SLASH=False 
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-
-CSRF_COOKIE_HTTPONLY = True  # Prevents JavaScript from accessing the CSRF token
-CSRF_COOKIE_SAMESITE = 'Strict'  # Ensures the CSRF cookie is only sent with same-site requests
-
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 
 # If you want to allow all origins (not recommended for production):
 # CORS_ALLOW_ALL_ORIGINS = True
