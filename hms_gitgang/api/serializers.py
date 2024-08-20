@@ -93,8 +93,15 @@ class VideoCompSerializer(serializers.ModelSerializer):
 
         # compress the video
         cl = vp(vid_path)
-        comp_path = f'{os.}'
+        comp_path = f'{os.path.splitext(vid_path)[0]}_com.mp4'
+        cl.write_videofile(comp_path, codec='libx264', bitrate='500k')
 
+        # remove the original file
+        os.remove(vid_path)
+
+        validated_data['comp_video'] = comp_path
+
+        # assign video object
         file = Video(
             user=self.context['request'].user,
             title=validated_data['title'],
@@ -102,8 +109,8 @@ class VideoCompSerializer(serializers.ModelSerializer):
             cmp_video=validated_data['cmp_video']
         )
 
+        # then save file object
         file.save()
-
         # after all return user
         return file
 
