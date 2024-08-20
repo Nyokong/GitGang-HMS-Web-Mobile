@@ -14,6 +14,9 @@ from django.contrib.auth.tokens import default_token_generator
 # we are importing videoFileClip to compress
 from moviepy.editor import VideoFileClip as vp 
 
+# import os
+import os
+
 class UserSerializer(serializers.ModelSerializer):
 
     # password confirmation
@@ -87,6 +90,10 @@ class VideoCompSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         vid_file = validated_data.get('cmp_video')
         vid_path = vid_file.temporary_file_path()
+
+        # compress the video
+        cl = vp(vid_path)
+        comp_path = f'{os.}'
 
         file = Video(
             user=self.context['request'].user,
