@@ -309,9 +309,10 @@ class UploadVideoViewTask(generics.CreateAPIView):
             os.makedirs(temp_dir, exist_ok=True)
             os.environ['TEMP'] = temp_dir
             os.environ['TMPDIR'] = temp_dir
+            print('response final: Data saved')
 
-            print('make a task: here')
-            my_task(input_file_path, subfolder_path, temp_dir)
+            # print('make a task: here')
+            # my_task(input_file_path, subfolder_path, temp_dir)
 
             return Response({"view": "view is a success!"}, status=status.HTTP_200_OK)
         else:

@@ -6,6 +6,10 @@ from django.db import models
 # importing abstract user
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
+# importing signals
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
 # Create your models here.
 
 # validate email
@@ -54,6 +58,11 @@ class Video(models.Model):
     class Meta:
         def __str__(self):
             return f'{self.user} - {self.title}'
+        
+@receiver(post_save, sender=Video)
+def video_post_save(sender, instance, created, *args, **kwargs):
+    # after saved in the database run a task
+    print("Signal Sent - Code now running!")
 
 class TestForm(models.Model):
     username = models.CharField(verbose_name='username', unique=True, max_length=8)
