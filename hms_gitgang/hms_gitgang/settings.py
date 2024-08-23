@@ -80,20 +80,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
 
-    'django_q',
-    
 ]
-
-# Configure Django-Q in settings.py
-Q_CLUSTER = {
-    'name': 'DjangoQ',
-    'workers': 4,
-    'recycle': 500,
-    'timeout': 60,
-    'queue_limit': 50,
-    'bulk': 10,
-    'orm': 'default'
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,7 +118,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hms_gitgang.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -141,6 +127,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# postgresql
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'gitgang_postgres',
+#         'USER': 'callmekay',
+#         'PASSWORD': 'Callmekay@4891',
+#         'HOST': 'db',  # This should match the service name in docker-compose.yml
+#         'PORT': '5432',
+#     }
+# }
+
 
 
 # Password validation

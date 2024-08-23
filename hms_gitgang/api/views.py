@@ -38,7 +38,6 @@ import moviepy.editor as mp
 import random
 
 from .task import my_task
-from django_q.tasks import async_task
 
 
 # from allauth.account.utils import send_password_reset_email
@@ -50,6 +49,7 @@ class UserCreateView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data, context={'request': request})
 
+        # is not valid = "this data does not match"
         serializer.is_valid(raise_exception=True)
 
         user = serializer.save()
@@ -63,23 +63,23 @@ class UserCreateView(generics.CreateAPIView):
             "message": "User created successfully. Please check your email to verify account."            
         }, status=status.HTTP_201_CREATED)
 
-    def send_verification_email(self, user, *args, **kwargs):
+    # def send_verification_email(self, user, *args, **kwargs):
 
-        # Generate a 5-digit verification code
-        verification_code = random.randint(10000, 99999)
+    #     # Generate a 5-digit verification code
+    #     verification_code = random.randint(10000, 99999)
 
-        # get user email
-        email = user.email
+    #     # get user email
+    #     email = user.email
 
-        # sender email
-        sender = settings.EMAIL_HOST_USER
+    #     # sender email
+    #     sender = settings.EMAIL_HOST_USER
 
-        # defining subject and message
-        subject = "Account Verification"
-        message = f'Your verfication code is {verification_code}'
+    #     # defining subject and message
+    #     subject = "Account Verification"
+    #     message = f'Your verfication code is {verification_code}'
 
-        # send the email
-        send_mail(subject, message, sender, [f'{email}'], fail_silently=False)
+    #     # send the email
+    #     send_mail(subject, message, sender, [f'{email}'], fail_silently=False)
 
         return Response({'Success': "Verification email sent"}, status=status.HTTP_200_OK)
 
@@ -98,7 +98,7 @@ class LoginAPIView(generics.GenericAPIView):
             # Authenticate the user
             user = authenticate(username=user_data['username'], password=user_data['password'])
 
-            print("Existing user: ",user)
+            print("Existing user: ",user) # error handling 
 
             # target_key = '_auth_user_id'
             # target_value = '3'
@@ -108,13 +108,16 @@ class LoginAPIView(generics.GenericAPIView):
                 # Create or get the token for the user
                 # token, created = Token.objects.get_or_create(user=user)
                 loggedUser = CustomUser.objects.get(username=user)
+
                 # Log the user in
                 login(request, user)
+
+                # create a session        
 
                 # print(request.session.session_key)
                 # Check if session exists
                 # if request.user.is_authenticated:
-                #     # Get all sessions
+                #     # Get all sessions        
                 #     sessions = Session.objects.filter(expire_date__gte=timezone.now())
                     # for session in sessions:
                     #     data = session.get_decoded()
@@ -198,7 +201,7 @@ class UploadVideoView(generics.CreateAPIView):
 
         if serializer.is_valid():
             # Print data to console
-            print('video upload in progress')
+            print('video upload in progress') # error handling 
             video = serializer.save()
             print('Original Video Uploaded!')
             # my_task("yes my task")

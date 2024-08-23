@@ -55,7 +55,7 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=80)
 
     class Meta:
-        model = TestForm
+        model = CustomUser
         fields = ('username', 'password')
 
 
