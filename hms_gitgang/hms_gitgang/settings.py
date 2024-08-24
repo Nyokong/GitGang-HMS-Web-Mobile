@@ -45,9 +45,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://localhost:5432",
+# ]
 
 APPEND_SLASH=False 
 
@@ -56,7 +57,7 @@ SESSION_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
 
 # If you want to allow all origins (not recommended for production):
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Application definition
@@ -121,24 +122,24 @@ WSGI_APPLICATION = 'hms_gitgang.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# postgresql
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'gitgang_postgres',
-#         'USER': 'callmekay',
-#         'PASSWORD': 'Callmekay@4891',
-#         'HOST': 'db',  # This should match the service name in docker-compose.yml
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+# postgresql
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'gitgang_postgres',
+        'USER': 'callmekay',
+        'PASSWORD': 'Callmekay@4891',
+        'HOST': 'db-1',  # This should match the service name in docker-compose.yml
+        'PORT': '5432',
+    }
+}
 
 
 

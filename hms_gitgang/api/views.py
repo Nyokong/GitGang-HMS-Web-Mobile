@@ -23,7 +23,7 @@ from django.contrib.sessions.models import Session
 from django.utils import timezone
 
 # opencv-python
-import cv2
+
 import os
 
 # settings

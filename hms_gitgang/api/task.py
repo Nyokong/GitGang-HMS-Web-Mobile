@@ -14,7 +14,7 @@ def my_task(initial_path, sub_folder, temp_dir):
         return {"error": "HLS creation failed"}
 
 # opencv-python
-import cv2
+
 import os
 
 # movie py 
