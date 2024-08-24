@@ -290,33 +290,7 @@ class UploadVideoViewTask(generics.CreateAPIView):
             video = serializer.save()
             print('Original Video Uploaded!')
 
-            # Process the video for adaptive streaming
-            file_obj = request.data['cmp_video']
-            input_file_path = file_obj.temporary_file_path()
-
-            # Debugging: Check if the file exists
-            if not os.path.exists(input_file_path):
-                return Response({"error": "Temporary file not found"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-            # Start background task
-            # Create the subfolder inside 'hls_videos'
-            subfolder_path = os.path.join(settings.MEDIA_ROOT, 'hls_videos', str(video.id))
-
-            output_dir = os.path.join(settings.MEDIA_ROOT, 'hls_videos', str(video.id))
-
-            os.makedirs(output_dir, exist_ok=True)
-
-            # Set the temp directory for moviepy
-            temp_dir = os.path.join(subfolder_path, 'temp')
-            os.makedirs(temp_dir, exist_ok=True)
-            os.environ['TEMP'] = temp_dir
-            os.environ['TMPDIR'] = temp_dir
-            print('response final: Data saved')
-
-            # print('make a task: here')
-            # my_task(input_file_path, subfolder_path, temp_dir)
-
-            return Response({"view": "view is a success!"}, status=status.HTTP_200_OK)
+            # return the success response
+            return Response({"view": "view is a success!"}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
