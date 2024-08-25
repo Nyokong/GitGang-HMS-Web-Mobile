@@ -12,7 +12,7 @@ urlpatterns = [
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
 
     # video views
-    path('view/videos/', views.VideoView.as_view()), 
+    path('videos/list/', views.VideoView.as_view()), 
     path('video/upload/',views.UploadVideoView.as_view(), name='video-upload'),
     path('video/upload2/',views.UploadVideoViewTask.as_view(), name='video-task-upload'),
     # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),

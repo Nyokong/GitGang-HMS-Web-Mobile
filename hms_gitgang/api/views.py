@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login
 
 from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer
-from .models import CustomUser, TestForm
+from .models import CustomUser, TestForm, Video
 
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -187,7 +187,13 @@ class UserListViewSet(APIView):
 class VideoView(generics.GenericAPIView):
     # a class the views all the videos
     # in the database all of them
-    pass
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request, format=None):
+        query = Video.objects.all()
+        serializer = VideoSerializer(query, many=True)
+
+        return Response(serializer.data)
 
 class UploadVideoView(generics.CreateAPIView):
     serializer_class = VideoSerializer  
