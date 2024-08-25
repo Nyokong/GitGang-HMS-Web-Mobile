@@ -122,23 +122,23 @@ WSGI_APPLICATION = 'hms_gitgang.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gitgang_postgres',
-        'USER': 'callmekay',
-        'PASSWORD': 'Callmekay@4891',
-        'HOST': 'db-1',  # This should match the service name in docker-compose.yml
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'gitgang_postgres',
+#         'USER': 'callmekay',
+#         'PASSWORD': 'Callmekay@4891',
+#         'HOST': 'db-1',  # This should match the service name in docker-compose.yml
+#         'PORT': '5432',
+#     }
+# }
 
 
 

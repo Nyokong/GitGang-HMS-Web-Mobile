@@ -176,7 +176,7 @@ class UserListViewSet(APIView):
 
     # gets users who are authenticated
     # for later purpose permissions might change
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAdminUser]
 
     def get(self, request, format=None):
         query = CustomUser.objects.all()
@@ -187,14 +187,27 @@ class UserListViewSet(APIView):
 class VideoView(generics.GenericAPIView):
     # a class the views all the videos
     # in the database all of them
-    # permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = VideoSerializer
 
-    def get(self, request, format=None):
-        query = Video.objects.all()
-        serializer = VideoSerializer(query, many=True)
+    # overwrite the get query method
+    def get_queryset(self):
+        return Video.objects.all()
 
-        return Response(serializer.data)
+    def get(self, request, format=None):
+        query = self.get_queryset()
+
+        serializer = self.get_serializer(query, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class DeleteVideoView(generics.DestroyAPIView):
+    # a class the views all the videos
+    # in the database all of them
+    permission_classes = [permissions.IsAuthenticated]
+
+    # retrieve all videos
+    query = Video.objects.all()    
 
 class UploadVideoView(generics.CreateAPIView):
     serializer_class = VideoSerializer  
