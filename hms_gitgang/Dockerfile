@@ -14,7 +14,7 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Define environment variable
-ENV NAME hms-venv
+ENV NAME=hms-venv
 
 # Run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

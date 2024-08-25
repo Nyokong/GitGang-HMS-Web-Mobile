@@ -129,7 +129,6 @@ WSGI_APPLICATION = 'hms_gitgang.wsgi.application'
 #     }
 # }
 
-# postgresql
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

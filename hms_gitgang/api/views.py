@@ -187,8 +187,9 @@ class UserListViewSet(APIView):
 class VideoView(generics.GenericAPIView):
     # a class the views all the videos
     # in the database all of them
-    permission_classes = [permissions.AllowAny]
-    
+    # permission_classes = [permissions.AllowAny]
+    serializer_class = VideoSerializer
+
     def get(self, request, format=None):
         query = Video.objects.all()
         serializer = VideoSerializer(query, many=True)
