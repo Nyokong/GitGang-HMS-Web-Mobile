@@ -81,6 +81,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'channels',
+    'oauth2_provider',
 ]
 
 REST_FRAMEWORK = {
