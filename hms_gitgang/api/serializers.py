@@ -77,6 +77,12 @@ class VideoSerializer(serializers.ModelSerializer):
         # after all return user
         return file
 
+class Videoviewlist(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ['id','title', 'description', 'cmp_video']
+
+
 
 class TestFormSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=8)

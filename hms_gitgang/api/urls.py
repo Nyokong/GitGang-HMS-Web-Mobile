@@ -6,17 +6,16 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     # path('', include(router.urls)),
-    path('user/create/', views.UserCreateView.as_view(), name="create-user"),
-    path('user/login/', views.LoginAPIView.as_view(), name="login-user"),
-    path('users/', views.UserListViewSet.as_view(), name='users'),
+    path('usr/create', views.UserCreateView.as_view(), name="create-user"),
+    path('usr/login', views.LoginAPIView.as_view(), name="login-user"),
+    path('usrs', views.UserListViewSet.as_view(), name='users'),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
 
     # video views
-    path('vd/lst/', views.VideoView.as_view(), name='video-list'), 
-    path('vd/upload-old/',views.UploadVideoView.as_view(), name='video-upload'),
-    path('vd/up/',views.UploadVideoViewTask.as_view(), name='video-task-upload'),
-    path('vd/del/<int:id>/',views.DeleteVideoView.as_view(), name='video-delete'),
-    # path('password/reset', views.PasswordReset.as_view(), name='password-reset'),
+    path('vd/lst', views.VideoView.as_view(), name='video-list'), 
+    path('vd/upload-old',views.UploadVideoView.as_view(), name='video-upload'),
+    path('vd/up',views.UploadVideoViewTask.as_view(), name='video-task-upload'),
+    path('vd/del/<int:pk>',views.DeleteVideoView.as_view(), name='video-delete'),
 
     # test form path
     path('test/', views.TestAPIView.as_view(), name="test-post"),

@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, TestFormSerializer, LoginSerializer, VideoSerializer
+from .serializers import UserSerializer, TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer
 from .models import CustomUser, TestForm, Video
 
 from django.utils.http import urlsafe_base64_decode
@@ -187,8 +187,8 @@ class UserListViewSet(APIView):
 class VideoView(generics.GenericAPIView):
     # a class the views all the videos
     # in the database all of them
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = VideoSerializer
+    permission_classes = [permissions.AllowAny]
+    serializer_class = Videoviewlist
 
     # overwrite the get query method
     def get_queryset(self):
@@ -204,10 +204,11 @@ class VideoView(generics.GenericAPIView):
 class DeleteVideoView(generics.DestroyAPIView):
     # a class the views all the videos
     # in the database all of them
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     # retrieve all videos
-    query = Video.objects.all()    
+    def get_queryset(self):
+        return Video.objects.all()  
 
 class UploadVideoView(generics.CreateAPIView):
     serializer_class = VideoSerializer  
