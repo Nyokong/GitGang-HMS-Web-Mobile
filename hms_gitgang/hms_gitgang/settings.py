@@ -59,10 +59,13 @@ SECURE_SSL_REDIRECT = False
 # If you want to allow all origins (not recommended for production):
 CORS_ALLOW_ALL_ORIGINS = True
 
+ASGI_APPLICATION = "hms_gitgang.asgi.application"
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,7 +83,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'corsheaders',
-    'channels',
     'oauth2_provider',
 ]
 
