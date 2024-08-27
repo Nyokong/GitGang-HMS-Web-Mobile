@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
+from .validators import validate_file_size
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -60,6 +62,8 @@ class LoginSerializer(serializers.Serializer):
 
 
 class VideoSerializer(serializers.ModelSerializer):
+    cmp_video= serializers.FileField(validators=[validate_file_size])
+    
     class Meta:
         model = Video
         fields = ['title', 'description', 'cmp_video']
