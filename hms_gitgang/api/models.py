@@ -20,7 +20,7 @@ def validate_email(email):
 
 # my user model
 class CustomUser(AbstractUser):
-    username = models.CharField(verbose_name="student_id", max_length=8, unique=True)
+    username = models.CharField(verbose_name="User ID", max_length=8, unique=True)
     is_lecturer = models.BooleanField(default=False)
 
     groups = models.ManyToManyField(Group, related_name='custom_users')
@@ -71,4 +71,47 @@ class TestForm(models.Model):
     class Meta:
         def __str__(self):
             return self.username
+        
+class Assignment(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    # attachment is optional
+    attachment= models.FileField(verbose_name="attachment",upload_to='attachments/', unique=False, null=True)
+    # the time it was created
+    created_at = models.DateTimeField(auto_now_add=True)
+    due_data = models.DateField()
 
+    class Meta:
+        def __str__(self):
+            return f'{self.title} - created: {self.created_at}'
+
+class Submitted(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='submissions')
+    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submissions')
+    content = models.TextField()
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+class Grade(models.Model):
+    lecturer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='given_grades')
+    submission = models.ForeignKey(Submitted, on_delete=models.CASCADE, related_name='grades')
+    grade = models.DecimalField(verbose_name="Percentage Grade",max_digits=3, decimal_places=2)  # e.g.,'A++', 'A+', 'B-', etc.
+    feedback = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        def __str__(self):
+            return f'Mark: {self.grade}/100'
+
+    # get the lette grade
+    def get_letter_grade(self):
+        if self.grade >= 90:
+            return 'A'
+        elif self.grade >= 80:
+            return 'B'
+        elif self.grade >= 70:
+            return 'C'
+        elif self.grade >= 60:
+            return 'D'
+        else:
+            return 'F'
+        

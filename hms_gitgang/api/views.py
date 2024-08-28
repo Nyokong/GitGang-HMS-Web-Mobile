@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
@@ -30,14 +29,9 @@ import os
 from django.conf import settings
 
 # video compression module and adaptive streaming
-import ffmpeg
 import m3u8
 
 import moviepy.editor as mp
-
-import random
-
-from .task import my_task
 
 
 # from allauth.account.utils import send_password_reset_email

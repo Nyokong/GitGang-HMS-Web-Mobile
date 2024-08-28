@@ -161,6 +161,27 @@ DATABASES = {
     }
 }
 
+ASGI_APPLICATION='hms_gitgang.asgi.application'
+
+CACHES = {
+    'default': {
+        'BACKEND': os.getenv('CACHES_BACKEND'),
+        'LOCATION': os.getenv('CACHES_LOCATION'),
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis', 6379)],
+        },
+    },
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

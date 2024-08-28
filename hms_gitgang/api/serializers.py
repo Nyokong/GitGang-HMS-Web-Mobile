@@ -1,15 +1,8 @@
 from rest_framework import serializers
 
-from .models import CustomUser, Video, TestForm
+from .models import CustomUser, Video, TestForm, Assignment
 
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-
-from django.core.mail import send_mail
-from django.urls import reverse
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
 
 from .validators import validate_file_size
 
@@ -60,15 +53,26 @@ class LoginSerializer(serializers.Serializer):
         model = CustomUser
         fields = ('username', 'password')
 
+class AssignmentForm(serializers.Serializer):
+    # due_date = serializers.DateField(widget=serializers.DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Assignment
+        fields = ['title', 'description', 'due_date']
 
 class VideoSerializer(serializers.ModelSerializer):
-    cmp_video= serializers.FileField(validators=[validate_file_size])
+    cmp_video = serializers.FileField(validators=[validate_file_size])
     
     class Meta:
         model = Video
         fields = ['title', 'description', 'cmp_video']
 
+    def validate(self, data):
+        validate_file_size(data['cmp_video'])
+        return data
+
     def create(self, validated_data):
+        
         file = Video(
             user=self.context['request'].user,
             title=validated_data['title'],
@@ -76,10 +80,11 @@ class VideoSerializer(serializers.ModelSerializer):
             cmp_video=validated_data['cmp_video']
         )
 
+        # save the video if is succesful
         file.save()
-
         # after all return user
         return file
+
 
 class Videoviewlist(serializers.ModelSerializer):
     class Meta:
