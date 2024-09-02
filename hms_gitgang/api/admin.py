@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 
-from .models import CustomUser, Video, TestForm, Assignment, Submitted, Grade
+from .models import CustomUser, Video, TestForm, Assignment, Submitted, Grade, VerificationToken
 
 class CustomUserAdmin(UserAdmin): 
 
@@ -25,6 +25,7 @@ class CustomTestAdmin():
 
 # Register your models here.
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(VerificationToken)
 admin.site.register(Video)
 admin.site.register(TestForm)
 admin.site.register(Assignment)

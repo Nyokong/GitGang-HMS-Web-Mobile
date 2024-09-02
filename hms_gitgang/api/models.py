@@ -42,6 +42,11 @@ class CustomUser(AbstractUser):
         def __str__(self):
             return self.username
         
+class VerificationToken(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=32,unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+        
 class CustomGroup(models.Model):
     # Your custom group fields
     pass
@@ -63,6 +68,9 @@ class Video(models.Model):
 def video_post_save(sender, instance, created, *args, **kwargs):
     # after saved in the database run a task
     print("Signal Sent - Code now running!")
+
+
+
 
 class TestForm(models.Model):
     username = models.CharField(verbose_name='username', unique=True, max_length=8)

@@ -9,8 +9,8 @@ urlpatterns = [
     path('usr/create', views.UserCreateView.as_view(), name="create-user"),
     path('usr/update', views.UserUpdateView.as_view(), name='user-update'),
     path('usr/login', views.LoginAPIView.as_view(), name="login-user"),
+    path('usr/verify/', views.VerificationView.as_view(), name='verify-email'),
     path('usrs', views.UserListViewSet.as_view(), name='users'),
-    path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
 
     # video views
     path('vd/lst', views.VideoView.as_view(), name='video-list'), 
@@ -19,6 +19,7 @@ urlpatterns = [
     path('vd/del/<int:pk>',views.DeleteVideoView.as_view(), name='video-delete'),
 
     # test form path
-    path('test/', views.TestAPIView.as_view(), name="test-post"),
+    path('test', views.TestAPIView.as_view(), name="test-post"),
     path('email', views.TestEmailView.as_view(), name="test-email"),
+    path('tokens', views.TestTokens.as_view(), name="test-email"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -33,6 +33,7 @@ django-redis==5.4.0
 django-sslserver==0.22
 django-storages==1.14.4
 djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
 ffmpeg-python==0.2.0
 Flask==3.0.3
 future==1.0.0
@@ -62,6 +63,7 @@ psycopg2-binary==2.9.9
 pyasn1==0.6.0
 pyasn1_modules==0.4.0
 pycparser==2.22
+PyJWT==2.9.0
 pyOpenSSL==24.2.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1

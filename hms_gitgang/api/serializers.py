@@ -50,7 +50,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CustomUser
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('username', 'first_name', 'last_name', 'is_active')
         
 
 # user login serializer - only need username and password
