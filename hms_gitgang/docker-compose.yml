@@ -6,6 +6,17 @@ name: hms-gitgang
   # hms_db
   
 services:
+  # web:
+  #   build: .
+  #   command: python manage.py runserver 0.0.0.0:8000 --reload
+  #   volumes:
+  #     - .:/code
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - hms_db
+  #     - redis
+      
   hms_db:
     restart: always
     image: postgres:16.3-alpine3.20
@@ -41,15 +52,7 @@ services:
   #   ports:
   #     - "8080:8080"
 
-  # web:
-  #   build: .
-  #   command: python manage.py runserver 0.0.0.0:8000 --reload
-  #   volumes:
-  #     - .:/code
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - hms_db
+  
 
 volumes:
   postgres_data:

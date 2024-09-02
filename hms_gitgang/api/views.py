@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer
+from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer
 from .models import CustomUser, TestForm, Video
 
 from django.utils.http import urlsafe_base64_decode
@@ -77,6 +77,29 @@ class UserCreateView(generics.CreateAPIView):
 
         return Response({'Success': "Verification email sent"}, status=status.HTTP_200_OK)
 
+class UserUpdateView(generics.RetrieveUpdateAPIView):
+
+    queryset = CustomUser.objects.all()
+    serializer_class = UserUpdateSerializer 
+
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(data=request.data,instance=user)
+
+        # if user is valid - check 
+        if serializer.is_valid():
+            user.save()
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
+# this is the Login View
 class LoginAPIView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 

@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 
 from .validators import validate_file_size
 
-
+# user creation serializer/form
 class UserSerializer(serializers.ModelSerializer):
 
     # password confirmation
@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password', 'password2')
+        fields = ('username', 'first_name', 'last_name' , 'email', 'password', 'password2')
         # passwords should not be returned upon response
         extra_kwargs = {
             'password': {'write_only': True},
@@ -44,7 +44,16 @@ class UserSerializer(serializers.ModelSerializer):
 
         # after all return user
         return user
+
+# user can only change details password change will done differently
+class UserUpdateSerializer(serializers.ModelSerializer):
     
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'first_name', 'last_name')
+        
+
+# user login serializer - only need username and password
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=8)
     password = serializers.CharField(max_length=80)
@@ -53,13 +62,14 @@ class LoginSerializer(serializers.Serializer):
         model = CustomUser
         fields = ('username', 'password')
 
+# create assignment serializer - only lecturer can access this.
 class AssignmentForm(serializers.Serializer):
-    # due_date = serializers.DateField(widget=serializers.DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = Assignment
         fields = ['title', 'description', 'due_date']
 
+# video create serializer - only students can see this
 class VideoSerializer(serializers.ModelSerializer):
     cmp_video = serializers.FileField(validators=[validate_file_size])
     
@@ -85,14 +95,14 @@ class VideoSerializer(serializers.ModelSerializer):
         # after all return user
         return file
 
-
+# video view list 
 class Videoviewlist(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ['id','title', 'description', 'cmp_video']
 
 
-
+# test - serializer
 class TestFormSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=8)
     password = serializers.CharField(max_length=80)

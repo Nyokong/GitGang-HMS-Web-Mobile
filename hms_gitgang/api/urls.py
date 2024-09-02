@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # path('', include(router.urls)),
     path('usr/create', views.UserCreateView.as_view(), name="create-user"),
+    path('usr/update', views.UserUpdateView.as_view(), name='user-update'),
     path('usr/login', views.LoginAPIView.as_view(), name="login-user"),
     path('usrs', views.UserListViewSet.as_view(), name='users'),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
