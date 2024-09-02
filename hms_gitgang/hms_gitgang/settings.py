@@ -23,15 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = 'api.CustomUser'
 
 # django default development phase
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 465
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
 # EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'callmekaywork@gmail.com'
-# EMAIL_HOST_PASSWORD = 'Khotso@4891'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 # settings.py
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
 # dont know what this does yet
 SITE_ID = 1  

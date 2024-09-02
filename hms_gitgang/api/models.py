@@ -20,7 +20,7 @@ def validate_email(email):
 
 # my user model
 class CustomUser(AbstractUser):
-    username = models.CharField(verbose_name="User ID", max_length=8, unique=True)
+    username = models.CharField(verbose_name="Username", max_length=8, unique=True)
     is_lecturer = models.BooleanField(default=False)
 
     groups = models.ManyToManyField(Group, related_name='custom_users')

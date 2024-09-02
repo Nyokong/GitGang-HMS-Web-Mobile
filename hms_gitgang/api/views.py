@@ -24,6 +24,7 @@ from django.utils import timezone
 # opencv-python
 
 import os
+import random
 
 # settings
 from django.conf import settings
@@ -49,33 +50,34 @@ class UserCreateView(generics.CreateAPIView):
         user = serializer.save()
 
         # Call the send_verification_email method with the newly created user
-        # if user:
-        #     self.send_verification_email(user)
+        if user:
+            self.send_verification_email(user)
 
         return Response({
             "user": serializer.data,
             "message": "User created successfully. Please check your email to verify account."            
         }, status=status.HTTP_201_CREATED)
 
-    # def send_verification_email(self, user, *args, **kwargs):
+    def send_verification_email(self, user, *args, **kwargs):
 
-    #     # Generate a 5-digit verification code
-    #     verification_code = random.randint(10000, 99999)
+        # Generate a 5-digit verification code
+        verification_code = random.randint(10000, 99999)
 
-    #     # get user email
-    #     email = user.email
+        # get user email
+        email = user.email
 
-    #     # sender email
-    #     sender = settings.EMAIL_HOST_USER
+        # sender email
+        sender = settings.EMAIL_HOST_USER
 
-    #     # defining subject and message
-    #     subject = "Account Verification"
-    #     message = f'Your verfication code is {verification_code}'
+        # defining subject and message
+        subject = "Account Verification"
+        message = f'Your verfication code is {verification_code}'
 
-    #     # send the email
-    #     send_mail(subject, message, sender, [f'{email}'], fail_silently=False)
+        # send the email
+        send_mail(subject, message, sender, [f'{email}'], fail_silently=False)
 
         return Response({'Success': "Verification email sent"}, status=status.HTTP_200_OK)
+
 
 class UserUpdateView(generics.RetrieveUpdateAPIView):
 
@@ -153,21 +155,6 @@ class LoginAPIView(generics.GenericAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class TestAPIView(generics.GenericAPIView):
-    serializer_class = TestFormSerializer
-
-    # post 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        if serializer.is_valid():
-            # Print data to console
-            print(request.data)
-            
-            # Send back a response
-            return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # class verify Email view 
@@ -332,3 +319,44 @@ class UploadVideoViewTask(generics.CreateAPIView):
             return Response({"view": "view is a success!"}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# tests
+class TestEmailView(generics.GenericAPIView):
+    serializer_class = None
+
+    def get(self, request):
+        # Send the email
+        # send_mail(
+        #     'Test Email',
+        #     'This is a test email from Django.',
+        #     'callmekaywork@gmail.com',
+        #     ['mikewolfnyokong@gmail.com'],
+        #     fail_silently=False,
+        # )
+        verification_code = random.randint(10000, 99999)
+        subject = "Account Verification"
+        message = f'Your verfication code is {verification_code}'
+        sender = settings.EMAIL_HOST_USER
+        email = ['mikewolfnyokong@gmail.com']
+        
+        send_mail(subject, message, sender, email, fail_silently=False)
+
+        # Return a success message
+        return Response({'message': 'Email sent successfully'}, status=status.HTTP_200_OK)
+
+class TestAPIView(generics.GenericAPIView):
+    serializer_class = TestFormSerializer
+
+    # post 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Print data to console
+            print(request.data)
+            
+            # Send back a response
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

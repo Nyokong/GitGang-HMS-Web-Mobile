@@ -20,4 +20,5 @@ urlpatterns = [
 
     # test form path
     path('test/', views.TestAPIView.as_view(), name="test-post"),
+    path('email', views.TestEmailView.as_view(), name="test-email"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
