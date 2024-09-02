@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'first_name', 'last_name' , 'email', 'password', 'password2')
+        fields = ('username', 'first_name', 'last_name' , 'email','is_lecturer', 'password', 'password2')
         # passwords should not be returned upon response
         extra_kwargs = {
             'password': {'write_only': True},
@@ -110,3 +110,10 @@ class TestFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestForm
         fields = ('username', 'password')
+# delete -seializer
+class UserDeleteSerializer(serializers.ModelSerializer):
+    def validate(self, data):
+
+         return data
+    def delete_user(self, user):
+        user.delete()

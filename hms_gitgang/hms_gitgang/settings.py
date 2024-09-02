@@ -52,6 +52,8 @@ ALLOWED_HOSTS = []
 #     "http://localhost:3000",
 #     "http://localhost:5432",
 # ]
+# If you want to allow all origins (not recommended for production):
+CORS_ALLOW_ALL_ORIGINS = True
 
 APPEND_SLASH=False 
 
@@ -59,8 +61,6 @@ CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
 
-# If you want to allow all origins (not recommended for production):
-CORS_ALLOW_ALL_ORIGINS = True
 
 ASGI_APPLICATION = "hms_gitgang.asgi.application"
 

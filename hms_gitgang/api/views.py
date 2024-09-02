@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer
+from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, UserDeleteSerializer
 from .models import CustomUser, TestForm, Video
 
 from django.utils.http import urlsafe_base64_decode
@@ -20,6 +20,7 @@ from django.core.mail import send_mail
 
 from django.contrib.sessions.models import Session
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 # opencv-python
 
@@ -100,6 +101,22 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+
+# DELETE VIEW USER
+class DeleteUserView(generics.DestroyAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserDeleteSerializer
+    permission_class = (IsAuthenticated,)
+
+    def get_object(self):
+        user_id = self.kwargs.get("pk")
+        return get_object_or_404(CustomUser, id=user_id)
+    
+    def destroy(self, request, *args, **kwargs):
+        user =self.get_object()
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # this is the Login View
 class LoginAPIView(generics.GenericAPIView):
@@ -320,6 +337,12 @@ class UploadVideoViewTask(generics.CreateAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# assignments views
+# create assignments
+
+# update assignments - only logged the lecturer
+
+# delete assignments - only lecturer and admin can access
 
 # tests
 class TestEmailView(generics.GenericAPIView):
