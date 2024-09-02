@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser, Video, TestForm, Assignment
+from .models import CustomUser, Video, TestForm, CreateAssignment, Assignment
 
 from django.contrib.auth.password_validation import validate_password
 
@@ -110,10 +110,22 @@ class TestFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestForm
         fields = ('username', 'password')
-# delete -seializer
+# delete -serializer
 class UserDeleteSerializer(serializers.ModelSerializer):
     def validate(self, data):
 
          return data
     def delete_user(self, user):
         user.delete()
+# create assignment serializer
+
+class AssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreateAssignment
+        fields = ['id', 'user', 'message', 'uploaded_file', 'created_at']
+        read_only_fields = ['id', 'user', 'created_at']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        assignment = CreateAssignment.objects.create(user=user, **validated_data)
+        return assignment

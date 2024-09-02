@@ -4,7 +4,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 # importing abstract user
-from django.contrib.auth.models import AbstractUser, Group, Permission, User
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.conf import settings
 
 # importing signals
 from django.dispatch import receiver
@@ -117,8 +118,8 @@ class Grade(models.Model):
         
 #creating assignment model
 
-class Assignment(models.Model):
-    user =models.ForeignKey(User, on_delete= models.CASCADE)
+class CreateAssignment(models.Model):
+    user =models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
     message = models.TextField()
     uploaded_file = models.FileField(upload_to ='assignments/')
     created_at =models.DateTimeField(auto_now_add= True)

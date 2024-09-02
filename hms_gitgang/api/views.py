@@ -9,8 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, UserDeleteSerializer
-from .models import CustomUser, TestForm, Video
+from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, UserDeleteSerializer, AssignmentSerializer
+from .models import CustomUser, TestForm, Video, CreateAssignment
 
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -339,7 +339,13 @@ class UploadVideoViewTask(generics.CreateAPIView):
 
 # assignments views
 # create assignments
- 
+class CreateAssignmentView(generics.CreateAPIView):
+    queryset = CreateAssignment.objects.all()
+    serializer_class = AssignmentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 # update assignments - only logged the lecturer
 
