@@ -22,7 +22,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    path('oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    path('accounts/', include('allauth.urls')),
+
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('auth/social/', include('allauth.socialaccount.urls')),
 ]
 
 

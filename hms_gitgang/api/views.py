@@ -6,19 +6,24 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework_simplejwt.tokens import RefreshToken
+import requests
 
 # auth
 from django.utils.crypto import get_random_string
 from django.contrib.auth import authenticate, login
 
+# Oauth2
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+# from rest_auth.registration.views import SocialLoginView
+from oauth2_provider.views import application
+
 from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer
 from .models import CustomUser, TestForm, Video, VerificationToken
 
-from django.utils.http import urlsafe_base64_decode
+# from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from django.urls import reverse
-from django.utils.encoding import force_bytes
+# from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 
 from django.contrib.sessions.models import Session
@@ -196,6 +201,64 @@ class LoginAPIView(generics.GenericAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+from allauth.account import views as account_views
+
+class CustomLoginView(account_views.LoginView):
+
+    def get_success_url(self):
+        # Perform custom actions after login
+        # ...
+
+        return super().get_success_url()
+    
+class CustomLogoutView(account_views.LogoutView):
+    
+    def get_success_url(self):
+        # Perform custom actions after login
+        # ...
+
+        return super().get_success_url()
+    
+class CustomSignupView(account_views.SignupView):
+    
+    def get_success_url(self):
+        # Perform custom actions after login
+        # ...
+
+        return super().get_success_url()
+
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from dj_rest_auth.registration.views import SocialLoginView
+
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+
+class GoogleCallbackView(APIView):
+    def get(self, request, *args, **kwargs):
+        code = request.GET.get('code')
+        if not code:
+            return Response({'error': 'No code provided'}, status=400)
+
+        # Exchange code for tokens
+        token_url = 'https://oauth2.googleapis.com/token'
+        data = {
+            'code': code,
+            'redirect_uri': '/',
+            'grant_type': 'authorization_code',
+        }
+        response = requests.post(token_url, data=data)
+        tokens = response.json()
+
+        access_token = tokens.get('access_token')
+        id_token = tokens.get('id_token')
+
+        # Verify ID token and get user info
+        user_info_url = 'https://www.googleapis.com/oauth2/v3/userinfo'
+        headers = {'Authorization': f'Bearer {access_token}'}
+        user_info_response = requests.get(user_info_url, headers=headers)
+        user_info = user_info_response.json()
+
+        return Response(user_info)
 
 # user display viewset
 class UserListViewSet(APIView):
