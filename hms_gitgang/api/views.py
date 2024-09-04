@@ -18,7 +18,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 # from rest_auth.registration.views import SocialLoginView
 from oauth2_provider.views import application
 
-from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer
+from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, AssignmentForm
 from .models import CustomUser, TestForm, Video, VerificationToken
 
 # from django.utils.http import urlsafe_base64_decode
@@ -404,6 +404,23 @@ class UploadVideoViewTask(generics.CreateAPIView):
             return Response({"view": "view is a success!"}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AssignmentView(generics.GenericAPIView):
+    serializer_class = AssignmentForm
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Print data to console
+            print('assignment upload in progress')
+            serializer.save()
+            # return the success response
+            return Response({"msg": "assignment creation is a success!"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # tests

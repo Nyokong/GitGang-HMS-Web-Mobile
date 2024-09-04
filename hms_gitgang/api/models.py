@@ -70,8 +70,6 @@ def video_post_save(sender, instance, created, *args, **kwargs):
     print("Signal Sent - Code now running!")
 
 
-
-
 class TestForm(models.Model):
     username = models.CharField(verbose_name='username', unique=True, max_length=8)
     password = models.CharField(verbose_name='password',  max_length=80)
@@ -81,13 +79,13 @@ class TestForm(models.Model):
             return self.username
         
 class Assignment(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    title = models.CharField(verbose_name="title", max_length=255)
+    description = models.TextField(verbose_name="description", blank=True, null=True)
     # attachment is optional
     attachment= models.FileField(verbose_name="attachment",upload_to='attachments/', unique=False, null=True)
     # the time it was created
     created_at = models.DateTimeField(auto_now_add=True)
-    due_data = models.DateField()
+    due_data = models.DateField(verbose_name="due date")
 
     class Meta:
         def __str__(self):

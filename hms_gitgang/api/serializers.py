@@ -66,10 +66,26 @@ class LoginSerializer(serializers.Serializer):
 
 # create assignment serializer - only lecturer can access this.
 class AssignmentForm(serializers.Serializer):
+    title = serializers.CharField(max_length=240)
+    description = serializers.Field()
+    due_date = serializers.DateTimeField()
 
     class Meta:
         model = Assignment
         fields = ['title', 'description', 'due_date']
+
+    def create(self, validated_data):
+        
+        assignment = Assignment(
+            title=validated_data['title'],
+            description=validated_data['description'],
+            due_date=validated_data['due_date']
+        )
+
+        # save the video if is succesful
+        assignment.save()
+        # after all return user
+        return assignment
 
 # video create serializer - only students can see this
 class VideoSerializer(serializers.ModelSerializer):

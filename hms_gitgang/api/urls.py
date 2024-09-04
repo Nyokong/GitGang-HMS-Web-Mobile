@@ -13,7 +13,7 @@ urlpatterns = [
     path('usr/verify/', views.VerificationView.as_view(), name='verify-email'),
     path('usrs', views.UserListViewSet.as_view(), name='users'),
 
-
+    # django allauth links
     path('custom/login', views.CustomLoginView.as_view(), name='custom-login'),
     path('custom/logout', views.CustomLogoutView.as_view(), name='custom-logout'),
     path('custom/signup', views.CustomSignupView.as_view(), name='custom-signup'),
@@ -27,6 +27,9 @@ urlpatterns = [
     path('vd/upload-old',views.UploadVideoView.as_view(), name='video-upload'),
     path('vd/up',views.UploadVideoViewTask.as_view(), name='video-task-upload'),
     path('vd/del/<int:pk>',views.DeleteVideoView.as_view(), name='video-delete'),
+
+    # assignment url enpoints
+    path('asmt/create', views.AssignmentView.as_view(), name='assignment-create'), 
 
     # test form path
     path('test', views.TestAPIView.as_view(), name="test-post"),
