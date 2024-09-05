@@ -54,4 +54,27 @@ DATABASES = {
     }
 }
 ```
+8. You just finished configuring the database, now you need to do some migrations
+9. This will only work in the root hms_gitgang folder where the manage.py file is in
+10. if you experience any error, please check you are in the right folder/path
+```Bash
+python manage.py makemigrations
+```
+11. Your makemigrations command has ran successfully, now you can migrate the database
+```Bash
+python manage.py migrate
+```
+12. if you are in docker your database server is running good but make sure if you are in production this is turned off
+this must be False if you are in production but lets say you are in development then this should be True
+```python
+# If you want to allow all origins (not recommended for production):
+CORS_ALLOW_ALL_ORIGINS = False
+```
+but lets say you want to specify the domain/hosts that can access the API this is where you allow them
+```python
+# CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:5432",
+]
+```
 
