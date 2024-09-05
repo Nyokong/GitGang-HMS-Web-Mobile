@@ -1,6 +1,6 @@
 from django.urls import path
-from . import consumer
+from . import channels
 
 websocket_urlpatterns = [
-    path('ws/sendfeedback', consumer.FeedbackConsumer.as_asgi()),
+    path('ws/sendfeedback', channels.FeedbackConsumer.as_asgi()),
 ]
