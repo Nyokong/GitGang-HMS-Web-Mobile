@@ -68,13 +68,26 @@ python manage.py migrate
 this must be False if you are in production but lets say you are in development then this should be True
 ```python
 # If you want to allow all origins (not recommended for production):
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 ```
 but lets say you want to specify the domain/hosts that can access the API this is where you allow them
 ```python
 # CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:5432",
+    "http://localhost:3000", # frontend from nextjs
+    "http://localhost:5432", # for docker database
 ]
 ```
+13. But you have successfully connected the hosts and databases
+14. Now we can create a super user
 
+```bash
+python manage.py createsuperuser
+```
+14. After going through creating the super use you can now run the server
+
+```bash
+python manage.py runserver
+```
+
+# Errors
+please report any error, an admin will reach out and help with any problem
