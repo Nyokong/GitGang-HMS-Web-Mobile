@@ -14,4 +14,11 @@ now you need to run it safely
 python -m venv hms-venv
 ```
 
-2. Now activate the environment
+2. Now activate the environment, go into your hms-venv/Scripts in CMD preferably
+```Bash
+activate
+```
+if it doesnt work mayb you are in Powershell
+```Bash
+Activate.bat
+```
