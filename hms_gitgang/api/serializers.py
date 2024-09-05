@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CustomUser, Video, TestForm, Assignment
+from .models import CustomUser, Video, TestForm, Assignment, FeedbackMessage
 
 from django.contrib.auth.password_validation import validate_password
 
@@ -118,6 +118,12 @@ class Videoviewlist(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ['id','title', 'description', 'cmp_video']
+
+# feedback serializer goes here
+class FeedbackMsgSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedbackMessage
+        fields = ['message']
 
 
 # test - serializer

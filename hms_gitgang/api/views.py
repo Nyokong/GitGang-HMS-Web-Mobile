@@ -18,8 +18,9 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 # from rest_auth.registration.views import SocialLoginView
 from oauth2_provider.views import application
 
-from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, AssignmentForm
-from .models import CustomUser, TestForm, Video, VerificationToken
+from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer
+from .serializers import FeedbackMsgSerializer, VideoSerializer, AssignmentForm
+from .models import CustomUser, TestForm, Video, VerificationToken, FeedbackMessage
 
 # from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -421,7 +422,19 @@ class AssignmentView(generics.GenericAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# feedback messages go here
+class FeedbackMessages(generics.GenericAPIView):
 
+    # gets users who are authenticated
+    # for later purpose permissions might change
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, format=None):
+        query = FeedbackMessage.objects.all()
+        serializer = FeedbackMsgSerializer(query, many=True)
+
+        return Response(serializer.data)
+    
 
 # tests
 class TestEmailView(generics.GenericAPIView):

@@ -31,6 +31,9 @@ urlpatterns = [
     # assignment url enpoints
     path('asmt/create', views.AssignmentView.as_view(), name='assignment-create'), 
 
+    # feedback http endpoints
+    path('feedback/msgs', views.FeedbackMessages.as_view(), name='feedback-msgs'),
+
     # test form path
     path('test', views.TestAPIView.as_view(), name="test-post"),
     path('email', views.TestEmailView.as_view(), name="test-email"),

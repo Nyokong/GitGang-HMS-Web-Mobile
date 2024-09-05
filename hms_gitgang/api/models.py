@@ -38,9 +38,8 @@ class CustomUser(AbstractUser):
 
         super().save(*args, **kwargs)
 
-    class Meta:
-        def __str__(self):
-            return self.username
+    def __str__(self):
+        return self.username
         
 class VerificationToken(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -60,9 +59,11 @@ class Video(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f'{self.user} - {self.title}'
+
     class Meta:
-        def __str__(self):
-            return f'{self.user} - {self.title}'
+        pass
         
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, *args, **kwargs):
@@ -96,6 +97,16 @@ class Submitted(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submissions')
     content = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+# this will be the message entity
+class FeedbackMessage(models.Model):
+    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='student')
+    lecturer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='lecturer')
+    video = models.ForeignKey(Video,on_delete=models.CASCADE, related_name='videofeedback')
+    message = models.TextField(verbose_name='Feedback Message',null=False)
+
+    def __str__(self):
+        return f'Student id: {self.student} Feedback from: {self.lecturer}'
 
 class Grade(models.Model):
     lecturer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='given_grades')
