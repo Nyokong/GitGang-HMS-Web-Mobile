@@ -11,7 +11,7 @@ urlpatterns = [
     path('usr/update', views.UserUpdateView.as_view(), name='user-update'),
     path('usr/login', views.LoginAPIView.as_view(), name="login-user"),
     path('usr/verify/', views.VerificationView.as_view(), name='verify-email'),
-    path('usrs', views.UserListViewSet.as_view(), name='users'),
+    path('usrs', views.UserListView.as_view(), name='users'),
 
     # django allauth links
     path('custom/login', views.CustomLoginView.as_view(), name='custom-login'),

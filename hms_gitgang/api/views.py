@@ -261,11 +261,11 @@ class GoogleCallbackView(APIView):
         return Response(user_info)
 
 # user display viewset
-class UserListViewSet(APIView):
+class UserListView(generics.GenericAPIView):
 
     # gets users who are authenticated
     # for later purpose permissions might change
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, format=None):
         query = CustomUser.objects.all()
