@@ -2,15 +2,14 @@
 
 name: hms-gitgang
 
-# services:
-  # hms_db
-  
 services:
   # web:
   #   build: .
-  #   command: python manage.py runserver 0.0.0.0:8000 --reload
+  #   command: python manage.py runserver 0.0.0.0:8000
   #   volumes:
   #     - .:/code
+  #   environment:
+  #     - DJANGO_SETTINGS_MODULE=hms_gitgang.settings
   #   ports:
   #     - "8000:8000"
   #   depends_on:
@@ -32,6 +31,7 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+    command: ["redis-server", "--bind", "127.0.0.1"]
 
   # web:
   #   build: .

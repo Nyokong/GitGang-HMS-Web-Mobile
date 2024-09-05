@@ -65,7 +65,7 @@ SESSION_COOKIE_SECURE = False
 SECURE_SSL_REDIRECT = False
 
 
-ASGI_APPLICATION = "hms_gitgang.asgi.application"
+ASGI_APPLICATION = "core.asgi.application"
 
 # Application definition
 
@@ -167,7 +167,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'hms_gitgang.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -208,7 +208,7 @@ DATABASES = {
     }
 }
 
-ASGI_APPLICATION='hms_gitgang.asgi.application'
+ASGI_APPLICATION='core.asgi.application'
 
 # CACHES = {
 #     'default': {

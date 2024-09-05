@@ -1,24 +1,18 @@
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 from .models import FeedbackMessage
 
-class FeedbackConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.group_name = 'feedback'
+class FeedbackConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+        self.send(text_data=json.dumps({
+            'message': 'Hello, WebSocket!'
+        }))
 
-        await self.channel_layer.group_add(
-            self.group_name,
-            self.channel_name
-        )
-        await self.accept()
+    def disconnect(self, close_code):
+        pass
 
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.group_name,
-            self.channel_name
-        )
-
-    async def receive(self, text_data):
+    def message(self, text_data):
         # we get the text json data here
         text_data_json = json.loads(text_data)
 
@@ -29,13 +23,9 @@ class FeedbackConsumer(AsyncWebsocketConsumer):
         # trigger the save method
         message.save()
 
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                'type': 'feedback_message',
-                'message': message
-            }
-        )
+        self.send(text_data=json.dumps({
+            'message': f"Saved: {text_data_json['message']}"
+        }))
 
     # async def chat_message(self, event):
     #     message = event['message']
