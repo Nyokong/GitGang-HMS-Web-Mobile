@@ -64,10 +64,13 @@ class LoginSerializer(serializers.Serializer):
 
 # create assignment serializer - only lecturer can access this.
 class AssignmentForm(serializers.Serializer):
+    title=serializers.CharField(max_length=240)
+    description= serializers.Field()
+    due_date = serializers.DateTimeField()
 
     class Meta:
         model = Assignment
-        fields = ['title', 'description', 'due_date']
+        fields = ['title', 'description', 'due_date', 'attachment']
 
 # video create serializer - only students can see this
 class VideoSerializer(serializers.ModelSerializer):
@@ -122,10 +125,21 @@ class UserDeleteSerializer(serializers.ModelSerializer):
 class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreateAssignment
-        fields = ['id', 'user', 'message', 'uploaded_file', 'created_at']
+        fields = ['id', 'user', 'message', 'upload_file', 'created_at']
         read_only_fields = ['id', 'user', 'created_at']
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        assignment = CreateAssignment.objects.create(user=user, **validated_data)
-        return assignment
+        
+        file = Video(
+            
+            id=validated_data['id'],
+            user=self.context['request'].user,
+            message = validated_data['message'],
+            upload_file=validated_data['upload_file'],
+            created_at=validated_data['created_at'],
+        )
+
+        # save the video if is succesful
+        file.save()
+        # after all return user
+        return file

@@ -9,8 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import authenticate, login
 
-from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, UserDeleteSerializer, AssignmentSerializer
-from .models import CustomUser, TestForm, Video, CreateAssignment
+from .serializers import UserSerializer, UserUpdateSerializer,TestFormSerializer, Videoviewlist,LoginSerializer, VideoSerializer, UserDeleteSerializer, AssignmentSerializer, AssignmentForm
+from .models import CustomUser, TestForm, Video, Assignment
 
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
@@ -339,13 +339,38 @@ class UploadVideoViewTask(generics.CreateAPIView):
 
 # assignments views
 # create assignments
-class CreateAssignmentView(generics.CreateAPIView):
-    queryset = CreateAssignment.objects.all()
-    serializer_class = AssignmentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class CreateAssignmentView(generics.CreateAPIView):
+#     serializer_class = AssignmentSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+
+#         if serializer.is_valid():
+#             # Print data to console
+#             print('serializer is valid')
+#             asignment = serializer.save()
+
+#             # return the success response
+#             return Response({"view": "view is a success!"}, status=status.HTTP_201_CREATED)
+        
+#         return Response({'msg':'assignment created'}, status=status.HTTP_200_OK)
+
+class AssignmentView(generics.CreateAPIView):
+    serializer_class =AssignmentForm
+    permission_class = [permissions.IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        serializer= self.get_serializer(data=request.data)
+
+        if serializer.isvalid():
+            #print data to console
+            print('assignment upload in progress')
+            serializer.save()
+            #return the success response
+            return Response ({"msg": "assignment creation is a success!"}, status=status.HTTP_201_CREATED)
+        
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # update assignments - only logged the lecturer
 

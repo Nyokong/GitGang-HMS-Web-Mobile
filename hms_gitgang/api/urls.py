@@ -12,8 +12,9 @@ urlpatterns = [
     path('usrs', views.UserListViewSet.as_view(), name='users'),
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
     path('usr/delete/<int:pk>/', views.DeleteUserView.as_view(), name='user-delete'),
-    path('usr/CreateAssignment/',views. CreateAssignmentView.as_view(), name='create-assignment'),
 
+    #path('assign/create/',views.CreateAssignmentView.as_view(), name='create-assignment'),
+    path('assign/assignment/',views. AssignmentView.as_view(), name='create-assignments'),
 
     # video views
     path('vd/lst', views.VideoView.as_view(), name='video-list'), 

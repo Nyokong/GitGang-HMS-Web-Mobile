@@ -74,18 +74,17 @@ class TestForm(models.Model):
             return self.username
         
 class Assignment(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+   title = models.CharField(verbose_name="title", max_length=255)
+   description = models.TextField(verbose_name="description", blank=True, null=True)
     # attachment is optional
-    attachment= models.FileField(verbose_name="attachment",upload_to='attachments/', unique=False, null=True)
+   attachment= models.FileField(verbose_name="attachment",upload_to='attachments/', unique=False, null=True)
     # the time it was created
-    created_at = models.DateTimeField(auto_now_add=True)
-    due_data = models.DateField()
+   created_at = models.DateTimeField(auto_now_add=True)
+   due_data = models.DateField(verbose_name="due date")
 
-    class Meta:
+   class Meta:
         def __str__(self):
             return f'{self.title} - created: {self.created_at}'
-
 class Submitted(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='submissions')
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='submissions')
@@ -117,12 +116,11 @@ class Grade(models.Model):
             return 'F'
         
 #creating assignment model
-
 class CreateAssignment(models.Model):
-    user =models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
-    message = models.TextField()
-    uploaded_file = models.FileField(upload_to ='assignments/')
-    created_at =models.DateTimeField(auto_now_add= True)
+     user =models.ForeignKey(settings.AUTH_USER_MODEL, on_delete= models.CASCADE)
+     message = models.TextField()
+     upload_file = models.FileField(upload_to ='assignments/')
+     created_at =models.DateTimeField(auto_now_add= True)
 
-    def __str__(self):
-        return f"Assignment by {self.user.username} on {self.created_at}"
+     def __str__(self):
+         return f"Assignment by {self.user.username} on {self.created_at}"
