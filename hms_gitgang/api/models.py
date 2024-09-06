@@ -79,8 +79,8 @@ class Assignment(models.Model):
     # attachment is optional
    attachment= models.FileField(verbose_name="attachment",upload_to='attachments/', unique=False, null=True)
     # the time it was created
+   due_date = models.DateTimeField(verbose_name="due_date")
    created_at = models.DateTimeField(auto_now_add=True)
-   due_data = models.DateField(verbose_name="due date")
 
    class Meta:
         def __str__(self):

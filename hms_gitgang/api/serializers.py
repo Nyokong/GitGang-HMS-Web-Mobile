@@ -5,6 +5,7 @@ from .models import CustomUser, Video, TestForm, CreateAssignment, Assignment
 from django.contrib.auth.password_validation import validate_password
 
 from .validators import validate_file_size
+from django.utils import timezone
 
 # user creation serializer/form
 class UserSerializer(serializers.ModelSerializer):
@@ -65,9 +66,11 @@ class LoginSerializer(serializers.Serializer):
 # create assignment serializer - only lecturer can access this.
 class AssignmentForm(serializers.Serializer):
     title=serializers.CharField(max_length=240)
-    description= serializers.Field()
-    due_date = serializers.DateTimeField()
+    description= serializers.CharField()
+    due_date = serializers.DateTimeField(default=timezone.now)
 
+    def create(self, validated_data):
+        return Assignment.objects.create(**validated_data)
     class Meta:
         model = Assignment
         fields = ['title', 'description', 'due_date', 'attachment']

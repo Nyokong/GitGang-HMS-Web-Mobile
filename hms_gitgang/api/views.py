@@ -362,7 +362,7 @@ class AssignmentView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer= self.get_serializer(data=request.data)
 
-        if serializer.isvalid():
+        if serializer.is_valid():
             #print data to console
             print('assignment upload in progress')
             serializer.save()
