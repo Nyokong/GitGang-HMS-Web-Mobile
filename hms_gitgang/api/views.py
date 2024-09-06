@@ -371,6 +371,14 @@ class AssignmentView(generics.CreateAPIView):
         
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+ #display assignments created
+class AssignmentListView(generics.ListCreateAPIView):
+    queryset = Assignment.objects.all()
+    serializer_class =AssignmentForm
+
+
+    
 
 # update assignments - only logged the lecturer
 

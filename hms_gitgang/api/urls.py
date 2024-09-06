@@ -13,7 +13,7 @@ urlpatterns = [
     path('verify-email/<uidb64>/<token>/', views.VerifyEmailView.as_view(), name='verify-email'),
     path('usr/delete/<int:pk>/', views.DeleteUserView.as_view(), name='user-delete'),
 
-    #path('assign/create/',views.CreateAssignmentView.as_view(), name='create-assignment'),
+    path('list/assign/',views.AssignmentListView.as_view(), name='list-assignment'),
     path('assign/assignment/',views. AssignmentView.as_view(), name='create-assignments'),
 
     # video views
