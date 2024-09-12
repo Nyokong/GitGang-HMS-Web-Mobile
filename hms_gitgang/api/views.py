@@ -399,7 +399,21 @@ class AssignmentUpdateView(generics.RetrieveUpdateAPIView):
 
    
 # delete assignments - only lecturer and admin can access
+class AssignmentDeleteView(generics.DestroyAPIView):
+    queryset = Assignment.objects.all()
+    serializer_class = AssignmentForm
+    permission_classes = [IsAuthenticated]
+   
+    def get_object(self):
+      assignment_id = self.kwargs.get("pk")
+      return get_object_or_404(Assignment, id =assignment_id)
 
+    def destroy(self, request, *args, **kwargs):
+        
+        
+        assignment =self.get_object()
+        assignment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 # tests
 class TestEmailView(generics.GenericAPIView):
     serializer_class = None
