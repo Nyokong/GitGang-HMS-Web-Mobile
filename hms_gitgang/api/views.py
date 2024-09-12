@@ -374,9 +374,7 @@ class AssignmentView(generics.CreateAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
   #display assignments created
-#class AssignmentListView(generics.ListCreateAPIView):
-    #queryset = Assignment.objects.all()
-    #serializer_class =AssignmentForm
+
 
 class AssignmentListView(generics.GenericAPIView):
         permission_classes = [permissions.AllowAny]
@@ -393,40 +391,13 @@ class AssignmentListView(generics.GenericAPIView):
 
 # update assignments - only logged the lecturer
 class AssignmentUpdateView(generics.RetrieveUpdateAPIView):
-    permission_classes =[permissions.AllowAny]
     queryset= Assignment.objects.all()
     serializer_class = AssignmentForm
+    permission_classes =(IsAuthenticated,)
     lookup_field ='id'
 
-    def update(self, request, *args, **kwargs):
-        try:
-              # Retrieve the object
-            instance = self.get_object()
-            # Serialize the data with partial updates enabled
-            serializer = self.get_serializer(instance, data=request.data, partial=True)
-            serializer.is_valid(raise_exception=True)
-            # Save the updated instance
-            self.perform_update(serializer)
-            response = super().update(request, *args, **kwargs)
-            return Response({
-                "message": "Assignment updated succesfully",
-                "data": response.data
-            }, status=status.HTTP_200_OK)
-        
-        except ValidationError as e:
-            
-            return Response({
 
-              "message": "Assignment updated succesfully",
-            "errors": e.detail
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-           
-            return Response({
-                "message": "An error occurred while updating the assignment",
-                "details": str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+   
 # delete assignments - only lecturer and admin can access
 
 # tests
