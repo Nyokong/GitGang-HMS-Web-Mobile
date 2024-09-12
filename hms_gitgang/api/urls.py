@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('list/assign/',views.AssignmentListView.as_view(), name='list-assignment'),
     path('assign/assignment/',views. AssignmentView.as_view(), name='create-assignments'),
+    path('update/assign/<int:id>/', views.AssignmentUpdateView.as_view(), name='assignment-update'),
 
     # video views
     path('vd/lst', views.VideoView.as_view(), name='video-list'), 
