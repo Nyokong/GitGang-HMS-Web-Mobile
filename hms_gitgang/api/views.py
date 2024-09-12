@@ -338,23 +338,9 @@ class UploadVideoViewTask(generics.CreateAPIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# assignments views
+
 # create assignments
-# class CreateAssignmentView(generics.CreateAPIView):
-#     serializer_class = AssignmentSerializer
 
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-
-#         if serializer.is_valid():
-#             # Print data to console
-#             print('serializer is valid')
-#             asignment = serializer.save()
-
-#             # return the success response
-#             return Response({"view": "view is a success!"}, status=status.HTTP_201_CREATED)
-        
-#         return Response({'msg':'assignment created'}, status=status.HTTP_200_OK)
 
 class AssignmentView(generics.CreateAPIView):
     serializer_class =AssignmentForm
@@ -395,6 +381,23 @@ class AssignmentUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = AssignmentForm
     permission_classes =(IsAuthenticated,)
     lookup_field ='id'
+
+    def get_object(self):
+        return super().get_object()
+    
+    def update(self, request, *args, **kwargs):
+        assignment = self.get_object()
+        serializer = self.get_serializer(assignment, data=request.data, partial = True)
+
+           # if assignment is valid - check 
+        if serializer.is_valid():
+            assignment.save()
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
+    
+
 
 
    
