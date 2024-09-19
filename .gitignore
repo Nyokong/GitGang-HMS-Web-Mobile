@@ -6,3 +6,21 @@ hms-venv/pyvenv.cfg
 
 hms_gitgang/.env
 hms_gitgang/.env
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Virtual environment
+venv/
+
+# Django database
+db.sqlite3
+
+# Media files
+media/
+
+# Environment variables
+.env
+
+# Logs
+*.log
